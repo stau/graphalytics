@@ -18,8 +18,8 @@ package nl.tudelft.graphalytics.domain;
 import java.io.Serializable;
 
 /**
- * Wrapper for graph format information describing both the directivity of the
- * graph and whether it is stored using a vertex- or edge-based encoding.
+ * Wrapper for graph format information describing the directivity of the graph, whether it is stored using a vertex- or
+ * edge-based encoding, and what delimiter is used to separate columns in the input graph.
  *
  * @author Tim Hegeman
  */
@@ -27,14 +27,17 @@ public final class GraphFormat implements Serializable {
 
 	private final boolean directed;
 	private final boolean edgeBased;
+	private final char delimiter;
 
 	/**
 	 * @param directed  true iff the graph is directed
 	 * @param edgeBased true iff the graph is stored edge-based
+	 * @param delimiter the delimiter used to separate columns in the input file
 	 */
-	public GraphFormat(boolean directed, boolean edgeBased) {
+	public GraphFormat(boolean directed, boolean edgeBased, char delimiter) {
 		this.directed = directed;
 		this.edgeBased = edgeBased;
+		this.delimiter = delimiter;
 	}
 
 	/**
@@ -49,6 +52,13 @@ public final class GraphFormat implements Serializable {
 	 */
 	public boolean isEdgeBased() {
 		return edgeBased;
+	}
+
+	/**
+	 * @return the delimiter used to separate columns in the input file
+	 */
+	public char getDelimiter() {
+		return delimiter;
 	}
 
 	@Override

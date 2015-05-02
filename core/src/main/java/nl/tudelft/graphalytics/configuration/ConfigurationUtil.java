@@ -29,19 +29,19 @@ public class ConfigurationUtil {
 			throw new InvalidConfigurationException("Missing property: \"" + property + "\".");
 		}
 	}
-	
+
 	public static String getString(Configuration config, String property)
 			throws InvalidConfigurationException {
 		ensureConfigurationKeyExists(config, property);
 		return config.getString(property);
 	}
-	
+
 	public static String[] getStringArray(Configuration config, String property)
 			throws InvalidConfigurationException {
 		ensureConfigurationKeyExists(config, property);
 		return config.getStringArray(property);
 	}
-	
+
 	public static boolean getBoolean(Configuration config, String property)
 			throws InvalidConfigurationException {
 		ensureConfigurationKeyExists(config, property);
@@ -52,7 +52,7 @@ public class ConfigurationUtil {
 					"\": \"" + config.getString(property) + "\", expected a boolean value.");
 		}
 	}
-	
+
 	public static int getInteger(Configuration config, String property)
 			throws InvalidConfigurationException {
 		ensureConfigurationKeyExists(config, property);
@@ -63,7 +63,7 @@ public class ConfigurationUtil {
 					"\": \"" + config.getString(property) + "\", expected an integer value.");
 		}
 	}
-	
+
 	public static long getLong(Configuration config, String property)
 			throws InvalidConfigurationException {
 		ensureConfigurationKeyExists(config, property);
@@ -83,7 +83,7 @@ public class ConfigurationUtil {
 			return defaultValue;
 		}
 	}
-	
+
 	public static float getFloat(Configuration config, String property)
 			throws InvalidConfigurationException {
 		ensureConfigurationKeyExists(config, property);
@@ -94,5 +94,20 @@ public class ConfigurationUtil {
 					"\": \"" + config.getString(property) + "\", expected a floating point value.");
 		}
 	}
-	
+
+	public static char getChar(Configuration config, String property)
+			throws InvalidConfigurationException {
+		String stringValue = getString(config, property);
+		if (stringValue.length() == 1) {
+			return stringValue.charAt(0);
+		} else if (stringValue.length() == 3 && stringValue.charAt(0) == stringValue.charAt(2) &&
+				(stringValue.charAt(0) == '\"' || stringValue.charAt(0) == '\'')) {
+			// Extract char when surrounded by quotes
+			return stringValue.charAt(1);
+		} else {
+			throw new InvalidConfigurationException("Invalid value for property \"" + property +
+					"\": \"" + config.getString(property) + "\", expected a single character.");
+		}
+	}
+
 }
