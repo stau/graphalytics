@@ -78,6 +78,12 @@ public abstract class GiraphJob extends Configured implements Tool {
     public static final StrConfOption ZOOKEEPER_ADDRESS = new StrConfOption(ZOOKEEPER_ADDRESS_KEY,
             "", "ZooKeeper address");
 
+    /** The configuration key for the column delimiter used in the input format. */
+    public static final String INPUT_DELIMITER_KEY = "graphalytics.giraphjob.input-delimiter";
+    /** The column delimiter used in the input format. */
+    public static final StrConfOption INPUT_DELIMITER = new StrConfOption(INPUT_DELIMITER_KEY,
+            "", "Input delimiter");
+
     private String inputPath;
     private String outputPath;
     private String zooKeeperAddress;
@@ -93,12 +99,18 @@ public abstract class GiraphJob extends Configured implements Tool {
     }
 
     private void loadConfiguration() {
-        if (INPUT_PATH.isDefaultValue(getConf()))
+        if (INPUT_PATH.isDefaultValue(getConf())) {
             throw new IllegalStateException("Missing mandatory configuration: " + INPUT_PATH_KEY);
-        if (OUTPUT_PATH.isDefaultValue(getConf()))
+        }
+        if (OUTPUT_PATH.isDefaultValue(getConf())) {
             throw new IllegalStateException("Missing mandatory configuration: " + OUTPUT_PATH_KEY);
-        if (ZOOKEEPER_ADDRESS.isDefaultValue(getConf()))
+        }
+        if (ZOOKEEPER_ADDRESS.isDefaultValue(getConf())) {
             throw new IllegalStateException("Missing mandatory configuration: " + ZOOKEEPER_ADDRESS_KEY);
+        }
+        if (INPUT_DELIMITER.isDefaultValue(getConf())) {
+            throw new IllegalStateException("Missing mandatory configuration: " + INPUT_DELIMITER_KEY);
+        }
 
         workerCount = WORKER_COUNT.get(getConf());
         heapSize = HEAP_SIZE_MB.get(getConf());
@@ -151,6 +163,9 @@ public abstract class GiraphJob extends Configured implements Tool {
         configuration.setZooKeeperConfiguration(zooKeeperAddress);
         configuration.setInt("mapreduce.map.memory.mb", workerMemory);
         configuration.set("mapreduce.map.java.opts", "-Xmx" + heapSize + "M");
+
+        // Copy input delimiter configuration option
+        INPUT_DELIMITER.set(configuration, INPUT_DELIMITER.get(getConf()));
 
         // Set algorithm-specific configuration
         configure(configuration);

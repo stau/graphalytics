@@ -16,15 +16,14 @@
 package nl.tudelft.graphalytics.giraph.io;
 
 import java.io.IOException;
-import java.util.regex.Pattern;
 
+import nl.tudelft.graphalytics.giraph.GiraphJob;
 import org.apache.giraph.edge.Edge;
 import org.apache.giraph.edge.EdgeFactory;
 import org.apache.giraph.io.EdgeReader;
 import org.apache.giraph.io.formats.TextEdgeInputFormat;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
-import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.InputSplit;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 
@@ -35,20 +34,23 @@ import org.apache.hadoop.mapreduce.TaskAttemptContext;
  * @author Tim Hegeman
  */
 public class UndirectedLongNullTextEdgeInputFormat extends TextEdgeInputFormat<LongWritable, NullWritable> {
-
-	private static final Pattern SEPARATOR = Pattern.compile("[\t ]");
 	
 	@Override
 	public EdgeReader<LongWritable, NullWritable> createEdgeReader(
 			InputSplit split, TaskAttemptContext context) throws IOException {
-		return new LongNullEdgeReader();
+		return new LongNullEdgeReader(GiraphJob.INPUT_DELIMITER.get(getConf()));
 	}
 	
 	private class LongNullEdgeReader extends TextEdgeReader {
 
 		private boolean outputBackwards = true;
 		private long first;
-		private long second;		
+		private long second;
+		private final String delimiter;
+
+		public LongNullEdgeReader(String delimiter) {
+			this.delimiter = delimiter;
+		}
 
 		@Override
 		public boolean nextEdge() throws IOException, InterruptedException {
@@ -57,10 +59,11 @@ public class UndirectedLongNullTextEdgeInputFormat extends TextEdgeInputFormat<L
 				return true;
 			}
 
-			if (!getRecordReader().nextKeyValue())
+			if (!getRecordReader().nextKeyValue()) {
 				return false;
+			}
 
-			String[] tokens = SEPARATOR.split(getRecordReader().getCurrentValue().toString());
+			String[] tokens = getRecordReader().getCurrentValue().toString().split(delimiter);
 			first = Long.parseLong(tokens[0]);
 			second = Long.parseLong(tokens[1]);
 			outputBackwards = false;

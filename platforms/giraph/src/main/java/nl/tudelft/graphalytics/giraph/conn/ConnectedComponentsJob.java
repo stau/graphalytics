@@ -16,6 +16,7 @@
 package nl.tudelft.graphalytics.giraph.conn;
 
 import nl.tudelft.graphalytics.domain.GraphFormat;
+import nl.tudelft.graphalytics.giraph.io.LongLongNullTextVertexInputFormat;
 import org.apache.giraph.conf.GiraphConfiguration;
 import org.apache.giraph.graph.Computation;
 import org.apache.giraph.io.EdgeInputFormat;
@@ -23,7 +24,6 @@ import org.apache.giraph.io.EdgeOutputFormat;
 import org.apache.giraph.io.VertexInputFormat;
 import org.apache.giraph.io.VertexOutputFormat;
 import org.apache.giraph.io.formats.IdWithValueTextOutputFormat;
-import org.apache.giraph.io.formats.LongLongNullTextInputFormat;
 import nl.tudelft.graphalytics.giraph.GiraphJob;
 import nl.tudelft.graphalytics.giraph.io.DirectedLongNullTextEdgeInputFormat;
 import nl.tudelft.graphalytics.giraph.io.UndirectedLongNullTextEdgeInputFormat;
@@ -56,7 +56,7 @@ public class ConnectedComponentsJob extends GiraphJob {
 	@Override
 	protected Class<? extends VertexInputFormat> getVertexInputFormatClass() {
 		return !graphFormat.isEdgeBased() ?
-				LongLongNullTextInputFormat.class :
+				LongLongNullTextVertexInputFormat.class :
 				null;
 	}
 

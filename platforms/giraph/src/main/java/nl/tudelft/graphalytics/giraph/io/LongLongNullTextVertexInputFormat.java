@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package nl.tudelft.graphalytics.giraph.evo;
+package nl.tudelft.graphalytics.giraph.io;
 
-import java.io.IOException;
-import java.util.List;
-
+import com.google.common.collect.Lists;
 import nl.tudelft.graphalytics.giraph.GiraphJob;
 import org.apache.giraph.edge.Edge;
 import org.apache.giraph.edge.EdgeFactory;
@@ -28,30 +26,30 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.InputSplit;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 
-import com.google.common.collect.Lists;
+import java.io.IOException;
+import java.util.List;
 
 /**
- * Based on {@link org.apache.giraph.io.formats.LongLongNullTextInputFormat}.
+ * Based on {@link org.apache.giraph.io.formats.LongLongNullTextInputFormat}. Extended to support custom delimiters.
  *
  * @author Tim Hegeman
  */
-public class ForestFireModelVertexInputFormat extends
-		TextVertexInputFormat<LongWritable, ForestFireModelData, NullWritable> {
+public class LongLongNullTextVertexInputFormat extends
+		TextVertexInputFormat<LongWritable, LongWritable, NullWritable> {
 
 	@Override
 	public TextVertexReader createVertexReader(InputSplit split, TaskAttemptContext context)
 			throws IOException {
-		return new ForestFireModelVertexReader(GiraphJob.INPUT_DELIMITER.get(getConf()));
+		return new LongLongNullVertexReader(GiraphJob.INPUT_DELIMITER.get(getConf()));
 	}
 
-	public class ForestFireModelVertexReader extends
+	public class LongLongNullVertexReader extends
 			TextVertexReaderFromEachLineProcessed<String[]> {
 		/** Cached vertex id for the current line */
 		private LongWritable id;
-		private ForestFireModelData value;
 		private final String delimiter;
 
-		public ForestFireModelVertexReader(String delimiter) {
+		public LongLongNullVertexReader(String delimiter) {
 			this.delimiter = delimiter;
 		}
 
@@ -59,7 +57,6 @@ public class ForestFireModelVertexInputFormat extends
 		protected String[] preprocessLine(Text line) throws IOException {
 			String[] tokens = line.toString().split(delimiter);
 			id = new LongWritable(Long.parseLong(tokens[0]));
-			value = new ForestFireModelData();
 			return tokens;
 		}
 
@@ -69,8 +66,8 @@ public class ForestFireModelVertexInputFormat extends
 		}
 
 		@Override
-		protected ForestFireModelData getValue(String[] tokens) throws IOException {
-			return value;
+		protected LongWritable getValue(String[] tokens) throws IOException {
+			return id;
 		}
 
 		@Override

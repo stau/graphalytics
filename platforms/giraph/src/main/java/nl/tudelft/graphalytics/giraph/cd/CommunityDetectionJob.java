@@ -29,7 +29,6 @@ import org.apache.giraph.io.VertexOutputFormat;
 import org.apache.giraph.io.formats.IdWithValueTextOutputFormat;
 import nl.tudelft.graphalytics.domain.algorithms.CommunityDetectionParameters;
 import nl.tudelft.graphalytics.giraph.GiraphJob;
-import nl.tudelft.graphalytics.giraph.io.DirectedLongNullTextEdgeInputFormat;
 import nl.tudelft.graphalytics.giraph.io.UndirectedLongNullTextEdgeInputFormat;
 
 /**

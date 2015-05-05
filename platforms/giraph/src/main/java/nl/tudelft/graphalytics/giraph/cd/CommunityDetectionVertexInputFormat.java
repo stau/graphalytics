@@ -17,8 +17,8 @@ package nl.tudelft.graphalytics.giraph.cd;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.regex.Pattern;
 
+import nl.tudelft.graphalytics.giraph.GiraphJob;
 import org.apache.giraph.edge.Edge;
 import org.apache.giraph.edge.EdgeFactory;
 import org.apache.giraph.io.formats.TextVertexInputFormat;
@@ -37,12 +37,10 @@ import com.google.common.collect.Lists;
 public abstract class CommunityDetectionVertexInputFormat<E extends Writable> extends
 		TextVertexInputFormat<LongWritable, CDLabel, E> {
 
-	private static final Pattern SEPARATOR = Pattern.compile("[\t ]");
-
 	@Override
 	public TextVertexReader createVertexReader(InputSplit split, TaskAttemptContext context)
 			throws IOException {
-		return new CommunityDetectionVertexReader();
+		return new CommunityDetectionVertexReader(GiraphJob.INPUT_DELIMITER.get(getConf()));
 	}
 
 	protected abstract E defaultValue();
@@ -52,10 +50,15 @@ public abstract class CommunityDetectionVertexInputFormat<E extends Writable> ex
 		/** Cached vertex id for the current line */
 		private LongWritable id;
 		private CDLabel value;
+		private final String delimiter;
+
+		public CommunityDetectionVertexReader(String delimiter) {
+			this.delimiter = delimiter;
+		}
 
 		@Override
 		protected String[] preprocessLine(Text line) throws IOException {
-			String[] tokens = SEPARATOR.split(line.toString());
+			String[] tokens = line.toString().split(delimiter);
 			id = new LongWritable(Long.parseLong(tokens[0]));
 			value = new CDLabel();
 			return tokens;

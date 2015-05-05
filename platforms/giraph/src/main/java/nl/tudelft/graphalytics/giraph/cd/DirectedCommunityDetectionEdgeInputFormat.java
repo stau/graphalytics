@@ -15,6 +15,7 @@
  */
 package nl.tudelft.graphalytics.giraph.cd;
 
+import nl.tudelft.graphalytics.giraph.GiraphJob;
 import nl.tudelft.graphalytics.giraph.io.LongPair;
 import org.apache.giraph.io.EdgeReader;
 import org.apache.giraph.io.formats.TextEdgeInputFormat;
@@ -25,7 +26,6 @@ import org.apache.hadoop.mapreduce.InputSplit;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 
 import java.io.IOException;
-import java.util.regex.Pattern;
 
 /**
  * Similar to {@link nl.tudelft.graphalytics.giraph.io.DirectedLongNullTextEdgeInputFormat
@@ -35,19 +35,23 @@ import java.util.regex.Pattern;
  */
 public class DirectedCommunityDetectionEdgeInputFormat extends TextEdgeInputFormat<LongWritable, BooleanWritable> {
 
-	private static final Pattern SEPARATOR = Pattern.compile("[\t ]");
-
 	@Override
 	public EdgeReader<LongWritable, BooleanWritable> createEdgeReader(
 			InputSplit split, TaskAttemptContext context) throws IOException {
-		return new LongBooleanEdgeReader();
+		return new LongBooleanEdgeReader(GiraphJob.INPUT_DELIMITER.get(getConf()));
 	}
 
 	private class LongBooleanEdgeReader extends TextEdgeReaderFromEachLineProcessed<LongPair> {
 
+		private final String delimiter;
+
+		public LongBooleanEdgeReader(String delimiter) {
+			this.delimiter = delimiter;
+		}
+
 		@Override
 		protected LongPair preprocessLine(Text line) throws IOException {
-			String[] tokens = SEPARATOR.split(line.toString());
+			String[] tokens = line.toString().split(delimiter);
 			long source = Long.parseLong(tokens[0]);
 			long destination = Long.parseLong(tokens[1]);
 			return new LongPair(source, destination);

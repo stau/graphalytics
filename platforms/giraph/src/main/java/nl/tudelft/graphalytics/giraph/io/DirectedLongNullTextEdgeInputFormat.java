@@ -18,6 +18,7 @@ package nl.tudelft.graphalytics.giraph.io;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
+import nl.tudelft.graphalytics.giraph.GiraphJob;
 import org.apache.giraph.io.EdgeReader;
 import org.apache.giraph.io.formats.TextEdgeInputFormat;
 import org.apache.hadoop.io.LongWritable;
@@ -34,19 +35,23 @@ import org.apache.hadoop.mapreduce.TaskAttemptContext;
  */
 public class DirectedLongNullTextEdgeInputFormat extends TextEdgeInputFormat<LongWritable, NullWritable> {
 
-	private static final Pattern SEPARATOR = Pattern.compile("[\t ]");
-	
 	@Override
 	public EdgeReader<LongWritable, NullWritable> createEdgeReader(
 			InputSplit split, TaskAttemptContext context) throws IOException {
-		return new LongNullEdgeReader();
+		return new LongNullEdgeReader(GiraphJob.INPUT_DELIMITER.get(getConf()));
 	}
 	
 	private class LongNullEdgeReader extends TextEdgeReaderFromEachLineProcessed<LongPair> {
 
+		private final String delimiter;
+
+		public LongNullEdgeReader(String delimiter) {
+			this.delimiter = delimiter;
+		}
+
 		@Override
 		protected LongPair preprocessLine(Text line) throws IOException {
-			String[] tokens = SEPARATOR.split(line.toString());
+			String[] tokens = line.toString().split(delimiter);
 			long source = Long.parseLong(tokens[0]);
 			long destination = Long.parseLong(tokens[1]);
 			return new LongPair(source, destination);

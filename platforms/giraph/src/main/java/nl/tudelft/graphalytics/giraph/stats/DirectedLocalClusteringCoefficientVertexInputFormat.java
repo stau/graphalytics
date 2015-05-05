@@ -17,8 +17,8 @@ package nl.tudelft.graphalytics.giraph.stats;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.regex.Pattern;
 
+import nl.tudelft.graphalytics.giraph.GiraphJob;
 import org.apache.giraph.edge.Edge;
 import org.apache.giraph.edge.EdgeFactory;
 import org.apache.giraph.io.formats.TextVertexInputFormat;
@@ -39,12 +39,10 @@ import com.google.common.collect.Lists;
 public class DirectedLocalClusteringCoefficientVertexInputFormat extends
 		TextVertexInputFormat<LongWritable, IntWritable, NullWritable> {
 
-	private static final Pattern SEPARATOR = Pattern.compile("[\t ]");
-
 	@Override
 	public TextVertexReader createVertexReader(InputSplit split, TaskAttemptContext context)
 			throws IOException {
-		return new StatsVertexReader();
+		return new StatsVertexReader(GiraphJob.INPUT_DELIMITER.get(getConf()));
 	}
 
 	public class StatsVertexReader extends
@@ -52,10 +50,15 @@ public class DirectedLocalClusteringCoefficientVertexInputFormat extends
 		/** Cached vertex id for the current line */
 		private LongWritable id;
 		private IntWritable value = new IntWritable();
+		private final String delimiter;
+
+		public StatsVertexReader(String delimiter) {
+			this.delimiter = delimiter;
+		}
 
 		@Override
 		protected String[] preprocessLine(Text line) throws IOException {
-			String[] tokens = SEPARATOR.split(line.toString());
+			String[] tokens = line.toString().split(delimiter);
 			id = new LongWritable(Long.parseLong(tokens[0]));
 			return tokens;
 		}

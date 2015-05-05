@@ -143,6 +143,7 @@ public class GiraphPlatform implements Platform {
 			GiraphJob.INPUT_PATH.set(jobConf, pathsOfGraphs.get(graph.getName()));
 			GiraphJob.OUTPUT_PATH.set(jobConf, hdfsOutputPath);
 			GiraphJob.ZOOKEEPER_ADDRESS.set(jobConf, ConfigurationUtil.getString(giraphConfig, ZOOKEEPERADDRESS));
+			GiraphJob.INPUT_DELIMITER.set(jobConf, Character.toString(graph.getGraphFormat().getDelimiter()));
 			transferIfSet(giraphConfig, JOB_WORKERCOUNT, jobConf, GiraphJob.WORKER_COUNT);
 			transferIfSet(giraphConfig, JOB_HEAPSIZE, jobConf, GiraphJob.HEAP_SIZE_MB);
 			transferIfSet(giraphConfig, JOB_MEMORYSIZE, jobConf, GiraphJob.WORKER_MEMORY_MB);
