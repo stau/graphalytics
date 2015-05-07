@@ -23,6 +23,7 @@ import nl.tudelft.graphalytics.domain.*;
 import nl.tudelft.graphalytics.graphlab.bfs.BreadthFirstSearchJob;
 import nl.tudelft.graphalytics.graphlab.cd.CommunityDetectionJob;
 import nl.tudelft.graphalytics.graphlab.conn.ConnectedComponentsJob;
+import nl.tudelft.graphalytics.graphlab.evo.ForestFireModelJob;
 import nl.tudelft.graphalytics.graphlab.stats.LocalClusteringCoefficientJob;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
@@ -167,10 +168,9 @@ public class GraphLabPlatform implements Platform {
                 case CONN:
                     job = new ConnectedComponentsJob(graphPath, graphFormat);
                     break;
-                // TODO: Implement ForestFireModel
-                //case EVO:
-                //    job = new ForestFireModelJob(parameters, graphPath, graphFormat);
-                //    break;
+                case EVO:
+                    job = new ForestFireModelJob(parameters, graphPath, graphFormat);
+                    break;
                 case STATS:
                     job = new LocalClusteringCoefficientJob(graphPath, graphFormat);
                     break;

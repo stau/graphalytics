@@ -47,11 +47,11 @@ public class ForestFireModelJob extends GraphLabJob {
     public String[] formatParametersAsStrings() {
         ForestFireModelParameters evoParameters = (ForestFireModelParameters) parameters;
         return formatParametersHelper(
-                String.valueOf(evoParameters.getMaxId()),
+                String.valueOf(evoParameters.getNumNewVertices()),
                 String.valueOf(evoParameters.getPRatio()),
+                String.valueOf(evoParameters.getMaxId()),
                 String.valueOf(evoParameters.getRRatio()),
-                String.valueOf(evoParameters.getMaxIterations()),
-                String.valueOf(evoParameters.getNumNewVertices())
+                String.valueOf(evoParameters.getMaxIterations())
         );
     }
 }
