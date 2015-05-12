@@ -55,3 +55,6 @@ def main():
     if float_not_equals(expected_average_cc, actual_average_cc):
         print('Average Clustering Coefficient is wrong: expected: "%s", but got: "%s"' % (
             expected_average_cc, actual_average_cc))
+
+if __name__ == '__main__':
+    main()

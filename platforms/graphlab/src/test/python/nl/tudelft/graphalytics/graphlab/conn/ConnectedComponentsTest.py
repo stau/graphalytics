@@ -44,3 +44,6 @@ def main():
         if test.sum() > 0:
             print('Not all values match, invalid algorithm')
             exit(1)
+
+if __name__ == '__main__':
+    main()
