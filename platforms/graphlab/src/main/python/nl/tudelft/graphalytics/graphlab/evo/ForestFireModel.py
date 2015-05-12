@@ -132,6 +132,7 @@ def select_in_links(graph, vertex, r_ratio, burnt_vertices, new_burning_vertices
 
 def propagate_fire(graph, new_vertex, ambassador, task):
     burnt_verts = set()
+    burnt_verts.add(new_vertex)
     burning_verts = set()
     burning_verts.add(ambassador)
 
