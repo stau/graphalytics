@@ -3,6 +3,9 @@
 
 	<artifactId>graphalytics-platforms</artifactId>
 	<packaging>pom</packaging>
+	<modules>
+		<module>ludograph</module>
+	</modules>
 	<parent>
 		<groupId>nl.tudelft.graphalytics</groupId>
 		<artifactId>graphalytics-root</artifactId>
@@ -41,6 +44,12 @@
 				<module>graphlab</module>
 			</modules>
 		</profile>
+		<profile>
+			<id>ludograph</id>
+			<modules>
+				<module>ludograph</module>
+			</modules>
+		</profile>
 
 		<!-- This profile enables all platforms by default, used by Jenkins to build all platforms -->
 		<profile>
@@ -54,6 +63,7 @@
 				<module>graphlab</module>
 				<module>mapreducev2</module>
 				<module>neo4j</module>
+				<module>ludograph</module>
 			</modules>
 		</profile>
 	</profiles>

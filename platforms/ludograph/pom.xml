@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <artifactId>graphalytics-platforms-ludograph</artifactId>
+    <packaging>jar</packaging>
+
+    <parent>
+        <groupId>nl.tudelft.graphalytics</groupId>
+        <artifactId>graphalytics-platforms</artifactId>
+        <version>0.2-RC1</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <properties>
+        <ludograph.version>1.0-SNAPSHOT</ludograph.version>
+        <scalaVersion>2.11.6</scalaVersion>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>${scalaVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>nl.tudelft.graphalytics</groupId>
+            <artifactId>graphalytics-core</artifactId>
+            <version>0.2-RC1</version>
+        </dependency>
+        <dependency>
+            <groupId>nl.tudelft.graphalytics</groupId>
+            <artifactId>graphalytics-tests</artifactId>
+            <version>0.2-RC1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>LudoGraph</groupId>
+            <artifactId>LudoGraph_PU</artifactId>
+            <version>${ludograph.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>LudoGraph</groupId>
+            <artifactId>LudoGraph_Conf</artifactId>
+            <version>${ludograph.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>LudoGraph</groupId>
+            <artifactId>LudoGraph_Communication</artifactId>
+            <version>${ludograph.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>LudoGraph</groupId>
+            <artifactId>LudoGraph_Cluster</artifactId>
+            <version>${ludograph.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>LudoGraph</groupId>
+            <artifactId>LudoGraph_IO_FS_Text</artifactId>
+            <version>${ludograph.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>LudoGraph</groupId>
+            <artifactId>LudoGraph_Pregel_Test</artifactId>
+            <version>${ludograph.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <scalaVersion>${scalaVersion}</scalaVersion>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

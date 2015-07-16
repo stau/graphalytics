@@ -93,6 +93,25 @@ The `graphx` benchmark uses YARN version 2.4.1 or later (earlier versions have n
 
 Because the GraphX benchmark uses Hadoop, you must also edit `config/hadoop.properties` as explained in the MapReduce section.
 
+
+### LudoGraph
+
+The 'ludograph' benchmark runs on Hadoop version 2.4.1 or later. Before launching the benchmark, make sure that Hadoop YARN is running already.
+
+To be able to run the single-job environment, the platform master must be up and running.
+
+ - `ludograph.job.num_workers`: Set the number of workers.
+ - `ludograph.job.worker.memory` : Set the memory in MB per worker.
+ - `ludograph.job.master.memory` : Set the memory in job master.
+ - `ludograph.job.worker.cores` : Set the cores per worker.
+ - `ludograph.job.master.cores` : Set the cores in job master.
+ - `ludograph.platform.host` : Sets the platform host name
+ - `ludograph.platform.port` : Sets the platform port
+ - `ludograph.client.listen.port` : Sets the port at which it can receive messages from LudoGraph
+ - `ludograph.job.jar.path` : Path of the job jar containing the implemented algorithms.
+
+It is important to say that LudoGraph expects all graphs to be in vertex based format.
+
 ### GraphLab Create
 
 The `graphlab` benchmark can run either locally or on Hadoop version 2.4.1 or later (earlier versions have not been attempted) with YARN as resource manager. Before launching the benchmark, ensure GraphLab Create is installed on your system with a valid (free) license key, the python executable is in your PATH and Hadoop is running in either pseudo-distributed or distributed mode (if used). Next, edit the `graphlab`-specific configuration file: `config/graphlab.properties` and change the following settings:

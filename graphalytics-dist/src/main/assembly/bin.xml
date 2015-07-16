@@ -16,6 +16,7 @@
 				<include>nl.tudelft.graphalytics:graphalytics-platforms-graphx</include>
 				<include>nl.tudelft.graphalytics:graphalytics-platforms-mapreducev2</include>
 				<include>nl.tudelft.graphalytics:graphalytics-platforms-neo4j</include>
+				<include>nl.tudelft.graphalytics:graphalytics-platforms-ludograph</include>
 			</includes>
 			<binaries>
 				<outputDirectory>platforms/${module.basedir.name}/target/</outputDirectory>

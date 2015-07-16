@@ -91,6 +91,10 @@ do
 			neo4j="neo4j"
 			shift
 			;;
+		ludograph)
+			ludograph="ludograph"
+			shift
+			;;
 		*)
 			echo "Unknown platform: $1"
 			exit 1
@@ -99,9 +103,9 @@ do
 done
 
 # Construct the list of profiles to activate, defaulting to all platforms
-profiles=$(concat-profiles $giraph $graphlab $graphx $mapreducev2 $neo4j)
+profiles=$(concat-profiles $giraph $graphlab $graphx $mapreducev2 $neo4j $ludograph)
 if [ "$profiles" == "" ]; then
-	profiles="giraph,graphlab,graphx,mapreducev2,neo4j"
+	profiles="giraph,graphlab,graphx,mapreducev2,neo4j,ludograph"
 fi
 if [ "$distribution" = "yes" ]; then
 	profiles=$(concat-profiles $profiles "dist")
